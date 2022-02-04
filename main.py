@@ -1,9 +1,6 @@
-from app import create_app
-from settings import HOST, PORT
+from app.views.users_views import View
+
 
 if __name__ == '__main__':
-    app = create_app()
-    app.run(
-        host=HOST,
-        port=PORT
-    )
+    view = View()
+    view.main()
