@@ -1,21 +1,20 @@
 from database import db
 
-_session = db.session
+_session = db.cursor()
 
 
 def commit():
-    _session.commit()
+    db.commit()
 
 
-def save(model: db.Model) -> db.Model:
-    _session.add(model)
+def save(model: object):
+    command = f"INSERT INTO {model.__tablename__} ({str(model)})"
+    _session.execute(command)
     commit()
     return model
 
 
-def delete(model: db.Model) -> db.Model:
+def delete(model: object):
     _session.delete(model)
     commit()
     return model
-
-

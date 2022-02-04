@@ -2,13 +2,13 @@ from database import db
 from uuid import uuid4
 
 
-class Book(db.Model):
+class Book:
     __tablename__ = 'books'
 
-    id = db.Column(db.String(36), default=lambda: str(uuid4()), primary_key=True)
-    name = db.Column(db.String(84), nullable=False, unique=True)
-    type = db.Column(db.String(128), nullable=True)
-    quantity = db.Column(db.Integer(), default=True)
+    id = str(uuid4())
+    name = ""
+    type = None
+    quantity = 0
 
     def serialize(self):
         return {
@@ -16,3 +16,7 @@ class Book(db.Model):
                 'email': self.type,
                 'active': self.quantity
                 }
+
+    def __str__(self):
+        return f"'{self.name}', '{self.type}', {self.quantity}"
+
