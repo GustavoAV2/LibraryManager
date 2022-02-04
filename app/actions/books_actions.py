@@ -1,10 +1,7 @@
 from typing import Dict, List
-from datetime import timedelta
 from app.models.users import User
 from app.models.book import Book
-from flask_jwt_extended import create_access_token
-from werkzeug.security import generate_password_hash
-from database.repository import save, delete, commit
+from database.repository import save, update, get, get_by_column, delete, commit
 
 
 def create_book(data: Dict) -> User or None:
@@ -38,13 +35,13 @@ def deleted_book(user_id: str) -> Book:
 
 
 def get_books() -> List[Book]:
-    books = Book.query.all()
+    books = get(Book)
     return books
 
 
 def get_book_by_id(book_id: str) -> Book:
-    return Book.query.get(book_id)
+    return get_by_column(Book, name_column='id', value_column=book_id)
 
 
 def get_book_by_name(name: str) -> Book:
-    return Book.query.filter(Book.name == name).first()
+    return get_by_column(Book, name_column='name', value_column=name)
