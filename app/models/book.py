@@ -5,10 +5,11 @@ from uuid import uuid4
 class Book:
     __tablename__ = 'books'
 
-    id = str(uuid4())
-    name = ""
-    type = None
-    quantity = 0
+    def __init__(self):
+        self.id = str(uuid4())
+        self.name = ""
+        self.type = None
+        self.quantity = 0
 
     def serialize(self):
         return {

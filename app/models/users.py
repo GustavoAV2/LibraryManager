@@ -5,10 +5,11 @@ from werkzeug.security import check_password_hash
 class User:
     __tablename__ = 'users'
 
-    id = str(uuid4())
-    email = ""
-    password = None
-    active = True
+    def __init__(self):
+        self.id = str(uuid4())
+        self.email = ""
+        self.password = None
+        self.active = True
 
     def verify_password(self, pwd):
         return check_password_hash(self.password, pwd)
