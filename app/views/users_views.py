@@ -26,10 +26,10 @@ class View:
                 op = int(input('Opcao:'))
 
                 if op == 1:
-                    payload = self.collect_user_data()
+                    payload = self.collect_data_user()
                     self.user: User = create_user(payload)
                 elif op == 2:
-                    payload = self.collect_user_data()
+                    payload = self.collect_data_user()
                 else:
                     self.run = False
                     break
@@ -51,13 +51,10 @@ class View:
 
                 if op == 1:
                     self.collect_data_book()
-
                 elif op == 2:
                     self.collect_data_book()
-
                 elif op == 3:
                     self.collect_data_book()
-
                 else:
                     self.run = False
                     break
