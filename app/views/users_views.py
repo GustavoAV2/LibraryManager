@@ -1,5 +1,3 @@
-from flask import jsonify, request
-from typing import Dict, Tuple, Any, List
 from flask_jwt_extended import (jwt_required, get_jwt_identity)
 from app.actions.users_actions import *
 from app.actions.books_actions import *
@@ -12,16 +10,14 @@ class View:
         self.token = None
 
     def main(self):
-        print('------ BEM VINDO A MARVIN-TECA -------')
         self.create_user_or_login()
 
         if self.run:
-            self.user = get_jwt_identity()
             self.library_manager()
 
     def create_user_or_login(self):
         while self.run:
-            print('1 - Criar usuário.\n2 - Login\n3 - Encerrar sessão')
+            print('-'*20 + '\n1 - Criar usuário.\n2 - Login\n3 - Encerrar sessão')
             try:
                 op = int(input('Opcao:'))
 
@@ -45,16 +41,28 @@ class View:
 
     def library_manager(self):
         while self.run:
-            print('1 - Cadastrar livro.\n2 - Atualizar livro\n3 - Deletar livro\n4 - Encerrar sessão')
+            self.space()
+            print('\n1-Cadastrar livro.\n2-Atualizar livro\n3-Visualizar livros\n4-Deletar livro\n5-Encerrar sessão')
             try:
                 op = int(input('Opcao:'))
 
                 if op == 1:
-                    self.collect_data_book()
+                    payload = self.collect_data_book()
+                    create_book(payload)
                 elif op == 2:
-                    self.collect_data_book()
+                    payload = self.collect_data_book()
+                    # update_book(payload)
                 elif op == 3:
-                    self.collect_data_book()
+                    self.space()
+                    books = get_books()
+                    if books:
+                        for book in books:
+                            print(book)
+                    else:
+                        print('Nao existem livros cadastrados!')
+                elif op == 4:
+                    payload = self.collect_data_book()
+                    # deleted_book(payload)
                 else:
                     self.run = False
                     break
@@ -76,6 +84,9 @@ class View:
         quantity = input('Quantidade:')
         return {'name': name, 'type': _type, 'quantity': quantity}
 
+    @staticmethod
+    def space():
+        print('-'*20)
 
 if __name__ == '__main__':
     view = View()
