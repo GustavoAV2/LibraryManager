@@ -4,13 +4,13 @@ from database.repository import _session, commit
 
 
 def create_user_table():
-    command = f"CREATE TABLE {User.__tablename__} (email text, password text, active bool)"
+    command = f"CREATE TABLE {User.__tablename__} (id int, email text, password text, active bool)"
     _session.execute(command)
     commit()
 
 
 def create_book_table():
-    command = f"CREATE TABLE {Book.__tablename__} (name text, type text, quantity int)"
+    command = f"CREATE TABLE {Book.__tablename__} (id int, name text, type text, quantity int)"
     _session.execute(command)
     commit()
 
