@@ -8,7 +8,7 @@ def create_book(data: Dict) -> User or None:
     try:
         return save(Book(
             name=data.get('name'),
-            type=data.get('type'),
+            _type=data.get('type'),
             quantity=data.get('quantity')
         ))
     except (AttributeError, KeyError, TypeError):

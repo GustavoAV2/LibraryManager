@@ -1,9 +1,9 @@
-from app.models.users import User
-from database.repository import save, delete, commit
-from werkzeug.security import generate_password_hash
 from typing import Dict, List
 from datetime import timedelta
+from app.models.users import User
 from flask_jwt_extended import create_access_token
+from werkzeug.security import generate_password_hash
+from database.repository import save, delete, commit, get, get_by_column, update
 
 
 def login(data: Dict) -> Dict:
@@ -52,13 +52,13 @@ def deleted_user(user_id: str) -> User:
 
 
 def get_users() -> List[User]:
-    users = User.query.all()
+    users = get(User)
     return users
 
 
 def get_user_by_id(user_id: str) -> User:
-    return User.query.get(user_id)
+    return get_by_column(User, name_column='id', value_column=user_id)
 
 
 def get_user_by_email(email: str) -> User:
-    return User.query.filter(User.email == email).first()
+    return get_by_column(User, name_column='email', value_column=email)
