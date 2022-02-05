@@ -8,7 +8,8 @@ def commit():
 
 
 def save(model: object):
-    command = f"INSERT INTO {model.__tablename__} ({str(model)})"
+    command = f"INSERT INTO {model.__tablename__} ({model.__repr__()}) VALUES ({str(model)})"
+    print(command)
     _session.execute(command)
     commit()
     return model
@@ -35,7 +36,7 @@ def get(model: object):
 
 
 def get_by_column(model: object, name_column: str, value_column):
-    command = f"SELECT * FROM {model.__tablename__} WHERE {name_column} == {value_column}"
+    command = f"SELECT * FROM {model.__tablename__} WHERE {name_column}='{value_column}'"
     _session.execute(command)
     item = _session.fetchone()
     return item
