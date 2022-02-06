@@ -1,4 +1,4 @@
-from typing import Dict, List
+from typing import Dict, List, Tuple
 from app.models.users import User
 from app.models.book import Book
 from database.repository import save, update, get, get_by_column, delete, commit
@@ -15,26 +15,16 @@ def create_book(data: Dict) -> User or None:
         return None
 
 
-def update_book(book_id: str, data: Dict) -> Book:
-    book: Book = get_book_by_id(book_id)
-    list_keys = list(data.keys())
-
-    book.name = data.get('name') if data.get('name') else book.name
-    book.type = data.get('type') if data.get('type') else book.type
-    book.quantity = data.get('quantity') if data.get('quantity') else book.quantity
-
-    commit()
-    return book
+def update_book(book_id: str, name: str, _type: str, quantity: int):
+    update(Book, f"name='{name}', type='{_type}', quantity='{quantity}'", book_id)
 
 
-def deleted_book(user_id: str) -> Book:
-    book: Book = get_book_by_id(user_id)
-    delete(book)
-    commit()
-    return book
+def deleted_book(book_id: str):
+    status = True if delete(Book, name_column='id', value_column=book_id).rowcount else False
+    return status
 
 
-def get_books() -> List[Book]:
+def get_books() -> Tuple:
     books = get(Book)
     return books
 

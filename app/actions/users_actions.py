@@ -1,25 +1,23 @@
-from typing import Dict, List
-from datetime import timedelta
+from typing import Dict, List, Tuple
 from app.models.users import User
-from flask_jwt_extended import create_access_token
 from werkzeug.security import generate_password_hash
 from database.repository import save, delete, commit, get, get_by_column, update
 
 
-def login(data: Dict) -> Dict:
+def login(data: Dict) -> bool:
     try:
-        user = get_user_by_email(data.get('email'))
+        payload = get_user_by_email(data.get('email'))
 
-        if not user.active:
-            return {'access_token': ''}
+        if not payload[3]:
+            return False
 
+        user = User(payload[1], payload[2], True)
         if not user or not user.verify_password(data.get('password')):
-            return {'access_token': ''}
+            return False
 
-        access_token = create_access_token(identity=user.id, expires_delta=timedelta(minutes=600))
-        return {'access_token': access_token}
+        return True
     except (AttributeError, KeyError, TypeError):
-        return {'access_token': ''}
+        return False
 
 
 def create_user(data: Dict) -> User or None:
@@ -32,26 +30,15 @@ def create_user(data: Dict) -> User or None:
         return None
 
 
-def update_user(user_id: str, data: Dict) -> User:
-    user: User = get_user_by_id(user_id)
-    list_keys = list(data.keys())
-
-    user.email = data.get('email') if data.get('email') else user.email
-    user.active = data.get('active') if list_keys.count('active') else user.active
-    user.password = generate_password_hash(data.get('password')) if data.get('password') else user.password
-
-    commit()
-    return user
+def update_user(user_id: str, email="", password="", active=True):
+    update(User, f"email='{email}', password='{password}', active='{active}'", user_id)
 
 
-def deleted_user(user_id: str) -> User:
-    user: User = get_user_by_id(user_id)
-    delete(user)
-    commit()
-    return user
+def deleted_user(user_id: str):
+    delete(User, name_column='id', value_column=user_id)
 
 
-def get_users() -> List[User]:
+def get_users() -> Tuple:
     users = get(User)
     return users
 
@@ -60,5 +47,5 @@ def get_user_by_id(user_id: str) -> User:
     return get_by_column(User, name_column='id', value_column=user_id)
 
 
-def get_user_by_email(email: str) -> User:
+def get_user_by_email(email: str) -> []:
     return get_by_column(User, name_column='email', value_column=email)
