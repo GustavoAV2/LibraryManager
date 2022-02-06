@@ -5,7 +5,7 @@ from uuid import uuid4
 class Book:
     __tablename__ = 'books'
 
-    def __init__(self, name="", _type="", quantity=""):
+    def __init__(self, name="", _type="", quantity=0):
         self.id = str(uuid4())
         self.name = name
         self.type = _type
