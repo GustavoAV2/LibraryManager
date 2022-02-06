@@ -1,7 +1,7 @@
-from typing import Dict, List, Tuple
+from typing import Dict, Tuple
 from app.models.users import User
 from app.models.book import Book
-from database.repository import save, update, get, get_by_column, delete, commit
+from database.repository import save, update, get, get_by_column, delete
 
 
 def create_book(data: Dict) -> User or None:

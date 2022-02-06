@@ -1,7 +1,7 @@
-from typing import Dict, List, Tuple
+from typing import Dict,  Tuple
 from app.models.users import User
 from werkzeug.security import generate_password_hash
-from database.repository import save, delete, commit, get, get_by_column, update
+from database.repository import save, delete, get, get_by_column, update
 
 
 def login(data: Dict) -> bool:

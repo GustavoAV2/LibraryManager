@@ -1,4 +1,3 @@
-from database import db
 from uuid import uuid4
 
 
