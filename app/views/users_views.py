@@ -9,7 +9,6 @@ class View:
 
     def main(self):
         self.create_user_or_login()
-
         if self.run:
             self.library_manager()
 
