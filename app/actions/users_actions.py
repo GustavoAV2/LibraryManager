@@ -22,10 +22,10 @@ def login(data: Dict) -> bool:
 
 def create_user(data: Dict) -> User or None:
     try:
-        return save(User(
+        return True if save(User(
             email=data.get('email'),
             password=generate_password_hash(data.get('password'))
-        ))
+        )).rowcount else False
     except (AttributeError, KeyError, TypeError):
         return None
 

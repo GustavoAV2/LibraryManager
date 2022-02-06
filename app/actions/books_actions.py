@@ -6,11 +6,11 @@ from database.repository import save, update, get, get_by_column, delete, commit
 
 def create_book(data: Dict) -> User or None:
     try:
-        return save(Book(
+        return True if save(Book(
             name=data.get('name'),
             _type=data.get('type'),
             quantity=data.get('quantity')
-        ))
+        )).rowcount else False
     except (AttributeError, KeyError, TypeError):
         return None
 
