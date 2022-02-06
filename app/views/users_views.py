@@ -75,6 +75,7 @@ class View:
         payload = self.collect_data_book()
         if create_book(payload):
             print(f"'Livro {payload.get('name')} cadastrado!'")
+            return True
         print('Nao foi possivel cadastrar!')
 
     def update_books_view(self):
