@@ -10,9 +10,9 @@ def commit():
 def save(model: object):
     command = f"INSERT INTO {model.__tablename__} ({model.__repr__()}) VALUES ({str(model)})"
     print(command)
-    _session.execute(command)
+    status = _session.execute(command)
     commit()
-    return model
+    return status
 
 
 def delete(model: object, name_column: str, value_column):
