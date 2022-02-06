@@ -21,20 +21,22 @@ class View:
 
                 if op == 1:
                     payload = self.collect_data_user()
-                    self.user: User = create_user(payload)
+                    if create_user(payload):
+                        print('Usuario criado!')
+                    else:
+                        print('Valores incorretos! Insira uma opcao:')
                 elif op == 2:
                     payload = self.collect_data_user()
                 else:
                     self.run = False
                     break
 
-                self.user = login(payload)
-                if self.user:
+                if login(payload):
                     break
                 else:
                     print('Usuario invalido! Insira uma opcao:')
             except (ValueError, TypeError):
-                print('Valor incorreto! Insira uma opcao:')
+                print('Valores incorretos! Insira uma opcao:')
                 continue
 
     def library_manager(self):
@@ -66,21 +68,26 @@ class View:
                     break
 
             except (ValueError, TypeError, AttributeError):
-                print('Valor incorreto! Insira uma opcao:')
+                print('Valores incorretos! Insira uma opcao:')
                 continue
 
     def insert_books_view(self):
         payload = self.collect_data_book()
-        create_book(payload)
+        if create_book(payload):
+            print(f"'Livro {payload.get('name')} cadastrado!'")
+        print('Nao foi possivel cadastrar!')
 
     def update_books_view(self):
         book_id = input('Insira o ID(Consulte na opcao 4):')
         data = self.collect_data_book()
         try:
-            update_book(book_id, name=data.get('name'), _type=data.get('type'), quantity=data.get('quantity'))
-            print(f"Livro {data.get('name')} Atualizado!")
+            if data.get('name') and data.get('type'):
+                update_book(book_id, name=data.get('name'), _type=data.get('type'), quantity=data.get('quantity'))
+                print(f"Livro {data.get('name')} Atualizado!")
+            else:
+                print('Valores incorretos! Insira uma opcao:')
         except (TypeError, ValueError, AttributeError):
-            print('Valor incorreto! Insira uma opcao:')
+            print('Valores incorretos! Insira uma opcao:')
 
     @staticmethod
     def get_books_view():
@@ -109,7 +116,7 @@ class View:
             else:
                 print('Livro nao existe, verifique o ID!')
         except (TypeError, ValueError, AttributeError):
-            print('Valor incorreto! Insira uma opcao:')
+            print('Valores incorretos! Insira uma opcao:')
 
     def collect_data_user(self):
         self.space()
